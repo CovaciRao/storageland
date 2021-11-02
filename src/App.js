@@ -24,6 +24,12 @@ class App extends React.Component {
     });
   }
 
+  setLoggin = () => {
+    this.setState({
+      isLogged: true,
+    });
+  }
+
 
   HandleLogin = (event) => {
     event.preventDefault();
@@ -31,9 +37,7 @@ class App extends React.Component {
       localStorage.setItem("Username", this.state.username);
       localStorage.setItem("Password", this.state.password);
       localStorage.setItem("isLogged", true);
-      this.setState({
-        isLogged: true,
-      })
+      this.setLoggin();
     } else {
       alert('Your password is incorrect');
     }
