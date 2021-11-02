@@ -8,7 +8,7 @@ class App extends React.Component {
     this.state = {
       username: '',
       password: '',
-      isLogged: localStorage.getItem('isLogged') === true ? localStorage.getItem('isLogged') : false,
+      isLogged: localStorage.getItem('isLogged') ? localStorage.getItem('isLogged') === "true" ? localStorage.getItem('isLogged') : "false" : "false",
     };
   }
 
@@ -24,23 +24,26 @@ class App extends React.Component {
     });
   }
 
-  checkPassword = () => {
-    if(this.state.password ==="HouseOfMouse")
-      return true;
-  }
 
   HandleLogin = (event) => {
     event.preventDefault();
-    localStorage.setItem("Username", this.state.username);
-    localStorage.setItem("Password", this.state.password);
-    localStorage.setItem("isLogged", true);
+    if(this.state.password === "HouseOfMouse") {
+      localStorage.setItem("Username", this.state.username);
+      localStorage.setItem("Password", this.state.password);
+      localStorage.setItem("isLogged", true);
+      this.setState({
+        isLogged: true,
+      })
+    } else {
+      alert('Your password is incorrect');
+    }
   }
 
   render() {
     return (
       <>
-      {this.state.isLogged === true ?
-      <div></div>
+      {this.state.isLogged == true ?
+      <div>Its working</div>
       :
       <div className="card text-center">
         <div className="card-body">
