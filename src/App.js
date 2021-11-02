@@ -1,14 +1,18 @@
 import React from 'react';
 import './App.css';
 import FormControl from './Form/Form';
+import LoggedInSection from './LoggedInSection/LoggedInSection';
+import ShowError from './ShowError/ShowError';
+import SubmitButton from './SubmitButton/SubmitButton';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
+      username: localStorage.getItem('username') ? localStorage.getItem('username') !== "" ? localStorage.getItem('username') : "" : "",
       password: '',
       isLogged: localStorage.getItem('isLogged') ? localStorage.getItem('isLogged') === "true" ? localStorage.getItem('isLogged') : "false" : "false",
+      wrongPass: 0,
     };
   }
 
@@ -26,10 +30,17 @@ class App extends React.Component {
 
   setLoggin = () => {
     this.setState({
-      isLogged: true,
+      isLogged: "true",
+      wrongPass: 0,
     });
   }
 
+  handleLoggout = () => {
+    localStorage.clear();
+    this.setState({
+      isLogged: "false",
+    })
+  }
 
   HandleLogin = (event) => {
     event.preventDefault();
@@ -39,29 +50,44 @@ class App extends React.Component {
       localStorage.setItem("isLogged", true);
       this.setLoggin();
     } else {
-      alert('Your password is incorrect');
+      this.setState({
+        wrongPass: 1,
+      })
     }
   }
 
   render() {
     return (
-      <>
-      {this.state.isLogged == true ?
-      <div>Its working</div>
-      :
-      <div className="card text-center">
-        <div className="card-body">
-          <FormControl 
-            handleFormSubmit={this.HandleLogin} 
-            username={this.state.username} 
-            password={this.state.password}
-            setUsername={this.setUsername}
-            setPassword={this.setPassword}
-          />
+      <section className="authentification">
+        <div className="card text-center">
+          <div className="card-body">
+            {this.state.isLogged == 'true' &&
+              <>
+                <LoggedInSection username={this.state.username}/>
+                <SubmitButton
+                  class={"btn btn-primary"} 
+                  type={"button"} 
+                  ButtonText={"LogOut"}
+                  handleLogout={this.handleLoggout}
+                />
+
+              </>
+            }
+            {this.state.isLogged == 'false' &&
+              <>
+                <FormControl 
+                  handleFormSubmit={this.HandleLogin} 
+                  username={this.state.username} 
+                  password={this.state.password}
+                  setUsername={this.setUsername}
+                  setPassword={this.setPassword}
+                />
+                <ShowError isError={this.state.wrongPass}/>
+              </>
+            } 
+          </div>
         </div>
-      </div>
-     } 
-      </>
+      </section>
     );
   }
 }
