@@ -1,5 +1,6 @@
-.App {
-  text-align: center;
+.App .forms {
+  display: flex;
+  justify-content: space-around;
 }
 
 .App-logo {
@@ -35,4 +36,18 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+button span + span {
+  margin-left: 5px;
+}
+
+.card {
+  margin: 5rem auto;
+  width: 50%;
+  text-align: center;
+}
+
+.form-label {
+  margin-right: 20px;
 }
